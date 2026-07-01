@@ -1,0 +1,32 @@
+{
+  "transcription": [
+    {
+      "offsets": {
+        "from": 0,
+        "to": 1250
+      },
+      "text": "  Bună ziua!  "
+    },
+    {
+      "offsets": {
+        "from": 1250,
+        "to": 2500
+      },
+      "text": " "
+    },
+    {
+      "offsets": {
+        "from": 2500,
+        "to": 5000
+      },
+      "text": "Acesta este un test."
+    },
+    {
+      "offsets": {
+        "from": 5000,
+        "to": 9000
+      },
+      "text": "Final."
+    }
+  ]
+}

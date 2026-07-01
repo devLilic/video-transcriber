@@ -31,3 +31,7 @@ yarn.lock
 /test-results/
 /playwright-report/
 /playwright/.cache/
+resources/media-tools/win-x64/*.exe
+resources/whisper/bin/win-x64/*
+!resources/whisper/bin/win-x64/.gitkeep
+resources/whisper/models/*.bin

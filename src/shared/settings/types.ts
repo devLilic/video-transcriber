@@ -27,6 +27,7 @@ export interface LicensingCache {
 export interface UiPreferences {
   theme: 'system' | 'light' | 'dark'
   density: 'comfortable' | 'compact'
+  playbackRate?: 0.75 | 1 | 1.2 | 1.5 | 2
 }
 
 export interface AppSettings {

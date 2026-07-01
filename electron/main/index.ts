@@ -6,9 +6,11 @@ import { registerMainModuleRegistry } from './bootstrap/registerMainModuleRegist
 import { createMainWindow } from './bootstrap/createMainWindow'
 import { bootstrapAppProtection } from './security/appProtection'
 import { applyAppSecurity } from './security/appSecurity'
+import { registerMediaProtocolHandler, registerMediaProtocolScheme } from './modules/media/mediaProtocol'
 
 const config = loadConfig()
 
+registerMediaProtocolScheme()
 applyAppSecurity()
 bootstrapAppProtection(config)
 registerSingleInstance()
@@ -26,4 +28,5 @@ async function bootstrap() {
 void registerMainModuleRegistry(config, () => mainWindow)
 registerAppLifecycle(() => mainWindow, bootstrap)
 
+app.whenReady().then(() => registerMediaProtocolHandler())
 app.whenReady().then(bootstrap)

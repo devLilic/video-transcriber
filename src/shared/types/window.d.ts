@@ -14,8 +14,22 @@ import type {
   LicensingEntitlementsPayload,
   LicensingReauthorizationResponse,
   LicensingStatusPayload,
+  ResetTranscriptSegmentTextRequest,
+  ResetTranscriptSegmentTextResponse,
+  StartLocalTranscriptionRequest,
+  StartLocalTranscriptionResponse,
+  TranscriptionErrorPayload,
+  UpdateTranscriptSegmentTextRequest,
+  UpdateTranscriptSegmentTextResponse,
 } from '@/shared/ipc/contracts'
 import type { LicenseEntitlementsResult } from '@/shared/licensing/contracts'
+import type {
+  LocalTranscriptionProgress,
+  LocalTranscriptionResult,
+  TranscriptBlocksAvailableEvent,
+} from '@/shared/local-transcription/types'
+import type { SegmentSelection, SelectedVideoSource } from '@/shared/media/types'
+import type { VideoProject } from '@/shared/projects/types'
 import type { UpdatePreferences, UiPreferences } from '@/shared/settings/types'
 import type { ProgressInfo } from 'electron-updater'
 import type { UpdateErrorPayload, UpdateStateEvent, VersionInfo } from './update'
@@ -62,6 +76,25 @@ declare global {
       setUpdatePreferences: (value: UpdatePreferences) => Promise<UpdatePreferences>
       getUiPreferences: () => Promise<UiPreferences>
       setUiPreferences: (value: UiPreferences) => Promise<UiPreferences>
+    }
+    mediaApi: {
+      selectVideo: () => Promise<SelectedVideoSource | null>
+    }
+    projectApi: {
+      load: (videoId: string) => Promise<VideoProject | null>
+      saveSelection: (videoId: string, selection: SegmentSelection) => Promise<VideoProject>
+      saveTranscription: (videoId: string, transcription: LocalTranscriptionResult) => Promise<VideoProject>
+    }
+    transcriptionApi: {
+      start: (request: StartLocalTranscriptionRequest) => Promise<StartLocalTranscriptionResponse>
+      cancel: (jobId: string) => Promise<void>
+      updateSegmentText: (request: UpdateTranscriptSegmentTextRequest) => Promise<UpdateTranscriptSegmentTextResponse>
+      resetSegmentText: (request: ResetTranscriptSegmentTextRequest) => Promise<ResetTranscriptSegmentTextResponse>
+      onProgress: (listener: (payload: LocalTranscriptionProgress) => void) => () => void
+      onBlocksAvailable: (listener: (payload: TranscriptBlocksAvailableEvent) => void) => () => void
+      onCompleted: (listener: (payload: LocalTranscriptionResult) => void) => () => void
+      onError: (listener: (payload: TranscriptionErrorPayload) => void) => () => void
+      onCancelled: (listener: (payload: { jobId: string }) => void) => () => void
     }
   }
 }

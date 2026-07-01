@@ -6,6 +6,9 @@ import { createCoreMainModule } from '../modules/core/createCoreMainModule'
 import { createDatabaseMainModule } from '../modules/database/createDatabaseMainModule'
 import { createI18nMainModule } from '../modules/i18n/createI18nMainModule'
 import { createLicensingMainModule } from '../modules/licensing/createLicensingMainModule'
+import { createLocalTranscriptionMainModule } from '../modules/local-transcription/createLocalTranscriptionMainModule'
+import { createMediaMainModule } from '../modules/media/createMediaMainModule'
+import { createProjectMainModule } from '../modules/projects/createProjectMainModule'
 import { createSettingsMainModule } from '../modules/settings/createSettingsMainModule'
 
 export function registerMainModuleRegistry(
@@ -20,6 +23,9 @@ export function registerMainModuleRegistry(
       createI18nMainModule(),
       createLicensingMainModule(),
       createAutoUpdateMainModule(),
+      createMediaMainModule(),
+      createProjectMainModule(),
+      createLocalTranscriptionMainModule(),
     ],
     {
       config,

@@ -4,7 +4,10 @@ import { createAppApiPreloadModule } from './modules/createAppApiPreloadModule'
 import { createDatabaseApiPreloadModule } from './modules/createDatabaseApiPreloadModule'
 import { createI18nApiPreloadModule } from './modules/createI18nApiPreloadModule'
 import { createLicensingApiPreloadModule } from './modules/createLicensingApiPreloadModule'
+import { createMediaApiPreloadModule } from './modules/createMediaApiPreloadModule'
+import { createProjectApiPreloadModule } from './modules/createProjectApiPreloadModule'
 import { createSettingsApiPreloadModule } from './modules/createSettingsApiPreloadModule'
+import { createTranscriptionApiPreloadModule } from './modules/createTranscriptionApiPreloadModule'
 import { createUpdateApiPreloadModule } from './modules/createUpdateApiPreloadModule'
 
 export function registerPreloadModuleRegistry(config: AppConfig) {
@@ -16,6 +19,9 @@ export function registerPreloadModuleRegistry(config: AppConfig) {
       createLicensingApiPreloadModule(),
       createDatabaseApiPreloadModule(),
       createSettingsApiPreloadModule(),
+      createMediaApiPreloadModule(),
+      createProjectApiPreloadModule(),
+      createTranscriptionApiPreloadModule(),
     ],
     { config },
   )

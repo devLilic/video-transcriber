@@ -29,6 +29,7 @@ const defaultSettings: AppSettings = {
   uiPreferences: {
     theme: 'system',
     density: 'comfortable',
+    playbackRate: 1,
   },
 }
 

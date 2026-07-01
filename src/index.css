@@ -1,16 +1,16 @@
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/jetbrains-mono';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Manrope Variable", Manrope, system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  color: #edf5ff;
+  background: #07090d;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -18,77 +18,148 @@
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+* {
+  box-sizing: border-box;
 }
 
+html,
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(86, 216, 255, 0.12), transparent 34%),
+    radial-gradient(circle at 82% 8%, rgba(155, 140, 255, 0.1), transparent 31%),
+    #07090d;
+  color: #edf5ff;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+#root {
+  width: 100%;
+  height: 100%;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button,
+select,
+textarea {
+  font: inherit;
 }
 
-code {
-  background-color: #1a1a1a;
-  padding: 2px 4px;
-  margin: 0 4px;
-  border-radius: 4px;
+::selection {
+  background: rgba(86, 216, 255, 0.28);
+  color: #ffffff;
 }
 
-.card {
-  padding: 2em;
+* {
+  scrollbar-color: #304158 #0b1018;
+  scrollbar-width: thin;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
-  a:hover {
-    color: #747bff;
+}
+
+@layer components {
+  .studio-panel {
+    border: 1px solid #263449;
+    border-radius: 16px;
+    background: rgba(16, 23, 34, 0.9);
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.28);
   }
-  button {
-    background-color: #f9f9f9;
+
+  .studio-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid #263449;
+    border-radius: 12px;
+    background: #1a2635;
+    padding: 0.5rem 0.75rem;
+    color: #edf5ff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, opacity 160ms ease;
   }
-  code {
-    background-color: #f9f9f9;
+
+  .studio-button:hover {
+    border-color: rgba(86, 216, 255, 0.7);
+    background: #223044;
+  }
+
+  .studio-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(86, 216, 255, 0.5);
+  }
+
+  .studio-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  .studio-icon-button {
+    display: inline-flex;
+    width: 2.25rem;
+    height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #263449;
+    border-radius: 999px;
+    background: #1a2635;
+    color: #edf5ff;
+    transition: border-color 160ms ease, color 160ms ease, opacity 160ms ease;
+  }
+
+  .studio-icon-button:hover {
+    border-color: rgba(86, 216, 255, 0.7);
+    color: #56d8ff;
+  }
+
+  .studio-icon-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(86, 216, 255, 0.5);
+  }
+
+  .studio-icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  .studio-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid #263449;
+    border-radius: 999px;
+    background: rgba(11, 16, 24, 0.7);
+    padding: 0.25rem 0.625rem;
+    color: #93a1b6;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .studio-timecode {
+    color: #56d8ff;
+    font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .studio-focus {
+    outline: none;
+  }
+
+  .studio-focus:focus {
+    box-shadow:
+      0 0 0 2px #07090d,
+      0 0 0 4px rgba(86, 216, 255, 0.6);
   }
 }

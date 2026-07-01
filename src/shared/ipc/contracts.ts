@@ -8,6 +8,14 @@ import type {
   LicenseStatusSnapshot,
 } from '../licensing/contracts'
 import type { AppSettings, SettingsKey } from '../settings/types'
+import type { SegmentSelection, SelectedVideoSource } from '../media/types'
+import type { VideoProject } from '../projects/types'
+import type {
+  LocalTranscriptSegment,
+  LocalTranscriptionProgress,
+  LocalTranscriptionResult,
+  TranscriptBlocksAvailableEvent,
+} from '../local-transcription/types'
 import type { UpdateErrorPayload, UpdateStateEvent, VersionInfo } from '../types/update'
 
 export const ipcInvokeChannels = {
@@ -28,6 +36,14 @@ export const ipcInvokeChannels = {
   databaseQuery: 'database:query',
   settingsGet: 'settings:get',
   settingsSet: 'settings:set',
+  mediaSelectVideo: 'media:select-video',
+  projectLoad: 'project:load',
+  projectSaveSelection: 'project:save-selection',
+  projectSaveTranscription: 'project:save-transcription',
+  transcriptionStart: 'transcription:start',
+  transcriptionCancel: 'transcription:cancel',
+  transcriptionUpdateSegmentText: 'transcription:update-segment-text',
+  transcriptionResetSegmentText: 'transcription:reset-segment-text',
 } as const
 
 export const ipcEventChannels = {
@@ -37,6 +53,11 @@ export const ipcEventChannels = {
   updateError: 'update:error',
   updateDownloadProgress: 'update:download-progress',
   updateDownloaded: 'update:downloaded',
+  transcriptionProgress: 'transcription:progress',
+  transcriptionBlocksAvailable: 'transcription:blocks-available',
+  transcriptionCompleted: 'transcription:completed',
+  transcriptionError: 'transcription:error',
+  transcriptionCancelled: 'transcription:cancelled',
 } as const
 
 export interface AppInfoPayload {
@@ -101,6 +122,67 @@ export type SettingsValuePayload = {
 }[SettingsKey]
 
 export type SettingsGetResponse = SettingsValuePayload
+
+export type MediaSelectVideoResponse = SelectedVideoSource | null
+
+export interface ProjectLoadRequest {
+  videoId: string
+}
+
+export interface ProjectSaveSelectionRequest {
+  videoId: string
+  selection: SegmentSelection
+}
+
+export interface ProjectSaveTranscriptionRequest {
+  videoId: string
+  transcription: LocalTranscriptionResult
+}
+
+export type ProjectLoadResponse = VideoProject | null
+export type ProjectSaveSelectionResponse = VideoProject
+export type ProjectSaveTranscriptionResponse = VideoProject
+
+export interface StartLocalTranscriptionRequest {
+  videoId: string
+  inSeconds: number
+  outSeconds: number
+  language: 'ro'
+}
+
+export interface StartLocalTranscriptionResponse {
+  jobId: string
+}
+
+export interface CancelLocalTranscriptionRequest {
+  jobId: string
+}
+
+export interface UpdateTranscriptSegmentTextRequest {
+  videoId: string
+  transcriptionCreatedAt: string
+  segmentId: string
+  text: string
+}
+
+export interface UpdateTranscriptSegmentTextResponse {
+  segment: LocalTranscriptSegment
+  fullText: string
+}
+
+export interface ResetTranscriptSegmentTextRequest {
+  videoId: string
+  transcriptionCreatedAt: string
+  segmentId: string
+}
+
+export type ResetTranscriptSegmentTextResponse = UpdateTranscriptSegmentTextResponse
+
+export interface TranscriptionErrorPayload {
+  jobId?: string
+  code: string
+  message: string
+}
 
 export interface IpcInvokeContract {
   [ipcInvokeChannels.appGetInfo]: {
@@ -171,6 +253,38 @@ export interface IpcInvokeContract {
     request: SettingsValuePayload
     response: SettingsValuePayload
   }
+  [ipcInvokeChannels.mediaSelectVideo]: {
+    request: void
+    response: MediaSelectVideoResponse
+  }
+  [ipcInvokeChannels.projectLoad]: {
+    request: ProjectLoadRequest
+    response: ProjectLoadResponse
+  }
+  [ipcInvokeChannels.projectSaveSelection]: {
+    request: ProjectSaveSelectionRequest
+    response: ProjectSaveSelectionResponse
+  }
+  [ipcInvokeChannels.projectSaveTranscription]: {
+    request: ProjectSaveTranscriptionRequest
+    response: ProjectSaveTranscriptionResponse
+  }
+  [ipcInvokeChannels.transcriptionStart]: {
+    request: StartLocalTranscriptionRequest
+    response: StartLocalTranscriptionResponse
+  }
+  [ipcInvokeChannels.transcriptionCancel]: {
+    request: CancelLocalTranscriptionRequest
+    response: void
+  }
+  [ipcInvokeChannels.transcriptionUpdateSegmentText]: {
+    request: UpdateTranscriptSegmentTextRequest
+    response: UpdateTranscriptSegmentTextResponse
+  }
+  [ipcInvokeChannels.transcriptionResetSegmentText]: {
+    request: ResetTranscriptSegmentTextRequest
+    response: ResetTranscriptSegmentTextResponse
+  }
 }
 
 export interface IpcEventContract {
@@ -180,4 +294,9 @@ export interface IpcEventContract {
   [ipcEventChannels.updateError]: UpdateErrorPayload
   [ipcEventChannels.updateDownloadProgress]: ProgressInfo
   [ipcEventChannels.updateDownloaded]: void
+  [ipcEventChannels.transcriptionProgress]: LocalTranscriptionProgress
+  [ipcEventChannels.transcriptionBlocksAvailable]: TranscriptBlocksAvailableEvent
+  [ipcEventChannels.transcriptionCompleted]: LocalTranscriptionResult
+  [ipcEventChannels.transcriptionError]: TranscriptionErrorPayload
+  [ipcEventChannels.transcriptionCancelled]: { jobId: string }
 }

@@ -55,6 +55,43 @@ npm run test:unit:watch
 npm run build
 ```
 
+## Local Transcription Setup
+
+```bash
+npm install
+npm run prepare:local-transcription
+npm run check:local-transcription-assets
+npm run dev
+```
+
+Local transcription runs completely on this machine and does not require an API key. The default MVP model is `small-q5_1`, with Romanian as the initial language.
+
+The model file is not stored in Git. The first local preparation downloads the media tools, the whisper.cpp runtime, and the model, so expect a download of a few hundred MB. Transcription is faster on modern processors.
+
+The release workflow downloads the local transcription tools automatically before packaging. The MVP does not yet include diarization or GPU support.
+
+### MVP Workflow
+
+1. Reporterul selecteaza video.
+2. Seteaza IN si OUT.
+3. Apasa Transcribe Segment.
+4. Blocurile apar progresiv.
+5. Reporterul poate reda si corecta fiecare bloc.
+6. Transcriptul final este salvat dupa terminarea intregului segment.
+
+Transcrierea este complet locala si foloseste limba romana. Blocurile sunt formate natural, aproximativ la 8-15 cuvinte sau 6-10 secunde, cu impartire la pauze naturale si punctuatie cand este posibil.
+
+Rezultatul partial ramane doar in interfata si nu este salvat ca transcript final. Blocurile pot fi editate dupa stabilizare, iar transcriptul complet consolidat se salveaza o singura data dupa succesul intregului segment.
+
+Viteze disponibile pentru player:
+- 0.75x
+- 1x
+- 1.2x
+- 1.5x
+- 2x
+
+Hotkeys includ seek rapid, Play/Pauza, setarea markerilor IN/OUT, navigarea la markeri si schimbarea vitezei. Iconul Info din coltul dreapta sus al playerului afiseaza toate comenzile rapide.
+
 ## Start A New Project From This Starter
 
 1. Clone this repository.
@@ -322,6 +359,13 @@ Release publishing expectations:
 - publish packaged application artifacts to a GitHub Release
 - keep release metadata and files compatible with `electron-updater`
 - point the production config at the repository that owns those releases
+
+Example future version publish:
+
+```bash
+npm version patch
+git push origin main --follow-tags
+```
 
 ## Database Integration Overview
 

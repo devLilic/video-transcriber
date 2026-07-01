@@ -7,7 +7,7 @@ export const productionConfig: AppConfig = {
   features: {
     ...baseConfig.features,
     i18n: false,
-    autoUpdate: false,
+    autoUpdate: true,
     appProtection: false,
     licensing: false,
     database: false,
@@ -15,7 +15,14 @@ export const productionConfig: AppConfig = {
   },
   update: {
     ...baseConfig.update,
-    enabled: false,
+    enabled: true,
+    autoDownload: false,
+    provider: {
+      ...baseConfig.update.provider,
+      owner: 'devLilic',
+      repo: 'video-transcriber',
+      visibility: 'public',
+    },
   },
   i18n: {
     ...baseConfig.i18n,

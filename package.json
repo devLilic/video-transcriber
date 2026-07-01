@@ -1,12 +1,16 @@
 {
-  "name": "default-electron-app-template",
-  "productName": "Default Electron App",
+  "name": "video-transcriber",
+  "productName": "Video Transcriber",
   "version": "0.1.0",
   "main": "dist-electron/main/index.js",
-  "description": "Template for modular Electron desktop applications.",
+  "description": "Video Transcriber desktop application.",
   "author": "devLilic13",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
   "debug": {
     "env": {
       "VITE_DEV_SERVER_URL": "http://127.0.0.1:7777/"
@@ -15,7 +19,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
+    "typecheck": "tsc --noEmit",
+    "build:app": "npm run typecheck && vite build",
+    "build": "npm run build:app",
+    "package:win": "npm run build:app && electron-builder --win --x64",
+    "publish:win": "npm run build:app && electron-builder --win --x64 --publish always",
+    "check:media-tools": "node scripts/check-media-tools.mjs",
+    "prepare:media-tools": "node scripts/prepare-media-tools.mjs",
+    "prepare:whisper-runtime": "node scripts/download-whisper-runtime.mjs",
+    "prepare:whisper-model": "node scripts/download-whisper-model.mjs",
+    "prepare:local-transcription": "npm run prepare:media-tools && npm run prepare:whisper-runtime && npm run prepare:whisper-model",
+    "check:local-transcription-assets": "node scripts/check-local-transcription-assets.mjs",
+    "postinstall": "electron-builder install-app-deps",
     "init:starter": "node scripts/init/run.mjs",
     "preview": "vite preview",
     "test": "npm run test:unit",
@@ -23,10 +38,15 @@
     "test:unit:watch": "vitest --config vitest.config.ts"
   },
   "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource-variable/manrope": "^5.2.8",
     "better-sqlite3": "^12.8.0",
     "drizzle-orm": "^0.45.1",
-    "electron-updater": "^6.3.9",
+    "electron-updater": "6.8.9",
+    "ffmpeg-static": "^5.3.0",
+    "ffprobe-static": "^3.1.0",
     "i18next": "^25.10.10",
+    "lucide-react": "^1.23.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^16.6.6"
@@ -38,15 +58,16 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
-    "electron": "^33.2.0",
-    "electron-builder": "^24.13.3",
+    "electron": "43.0.0",
+    "electron-builder": "26.15.3",
+    "extract-zip": "^2.0.1",
     "postcss": "^8.4.49",
     "postcss-import": "^16.1.0",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.4.2",
     "vite": "^5.4.11",
-    "vite-plugin-electron": "^0.29.0",
-    "vite-plugin-electron-renderer": "^0.14.6",
+    "vite-plugin-electron": "0.29.1",
+    "vite-plugin-electron-renderer": "0.14.7",
     "vitest": "^2.1.5"
   }
 }
