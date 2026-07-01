@@ -30,7 +30,20 @@ jobs:
       - name: Prepare local transcription assets
         run: npm run prepare:local-transcription
 
-      - name: Publish Windows release
-        run: npm run publish:win
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Package Windows release
+        run: npm run package:win
+
+      - name: Read package version
+        id: package
+        shell: pwsh
+        run: |
+          $version = node -p "JSON.parse(require('fs').readFileSync('package.json', 'utf8')).version"
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/${{ steps.package.outputs.version }}/*.exe
+            release/${{ steps.package.outputs.version }}/*.exe.blockmap
+            release/${{ steps.package.outputs.version }}/latest.yml
