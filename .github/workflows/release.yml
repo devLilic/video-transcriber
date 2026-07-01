@@ -27,18 +27,28 @@ jobs:
       - name: Check release tag
         run: npm run check:release-tag -- ${{ github.ref_name }}
 
-      - name: Prepare local transcription assets
-        run: npm run prepare:local-transcription
-
-      - name: Package Windows release
-        run: npm run package:win
-
       - name: Read package version
         id: package
         shell: pwsh
         run: |
           $version = node -p "JSON.parse(require('fs').readFileSync('package.json', 'utf8')).version"
           "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Prepare local transcription assets
+        run: npm run prepare:local-transcription
+
+      - name: Package Windows release
+        shell: pwsh
+        run: |
+          npm run build:app
+          npx electron-builder --win --x64 --publish never --config.npmRebuild=false
+
+      - name: Generate release patch
+        shell: pwsh
+        run: |
+          $version = '${{ steps.package.outputs.version }}'
+          $patchPath = "release/$version/video-transcriber-v$version.patch"
+          git diff HEAD~1..HEAD > $patchPath
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v2
@@ -47,3 +57,4 @@ jobs:
             release/${{ steps.package.outputs.version }}/*.exe
             release/${{ steps.package.outputs.version }}/*.exe.blockmap
             release/${{ steps.package.outputs.version }}/latest.yml
+            release/${{ steps.package.outputs.version }}/*.patch
