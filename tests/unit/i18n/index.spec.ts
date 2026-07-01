@@ -66,12 +66,12 @@ describe('i18n base setup', () => {
   it('falls back to the configured default language when the requested language is unsupported', () => {
     const config = loadConfig('production', {})
 
-    expect(resolveLanguage('de', config)).toBe('en')
+    expect(resolveLanguage('de', config)).toBe('ro')
   })
 
   it('falls back to english when the configured default language is not supported', () => {
     const config = loadConfig('production', {
-      APP_I18N_SUPPORTED_LANGUAGES: 'ro,ru',
+      APP_I18N_SUPPORTED_LANGUAGES: 'ru',
     })
 
     expect(getFallbackLanguage(config)).toBe('en')

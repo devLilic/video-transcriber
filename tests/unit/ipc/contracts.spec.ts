@@ -17,10 +17,20 @@ describe('ipc contracts', () => {
       'update:quit-and-install',
       'licensing:get-status',
       'licensing:activate',
+      'licensing:request-reauthorization',
+      'licensing:confirm-rebind',
       'licensing:get-entitlements',
       'database:query',
       'settings:get',
       'settings:set',
+      'media:select-video',
+      'project:load',
+      'project:save-selection',
+      'project:save-transcription',
+      'transcription:start',
+      'transcription:cancel',
+      'transcription:update-segment-text',
+      'transcription:reset-segment-text',
     ])
     expect(new Set(channels).size).toBe(channels.length)
   })
@@ -35,6 +45,11 @@ describe('ipc contracts', () => {
       'update:error',
       'update:download-progress',
       'update:downloaded',
+      'transcription:progress',
+      'transcription:blocks-available',
+      'transcription:completed',
+      'transcription:error',
+      'transcription:cancelled',
     ])
     expect(new Set(channels).size).toBe(channels.length)
   })

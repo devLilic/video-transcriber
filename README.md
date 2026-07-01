@@ -360,7 +360,27 @@ Release publishing expectations:
 - keep release metadata and files compatible with `electron-updater`
 - point the production config at the repository that owns those releases
 
-Example future version publish:
+### Versioning And Tags
+
+GitHub Releases are created from Git tags that start with `v`. The tag must match the version in `package.json`.
+
+Use one of these commands from `main`:
+
+```bash
+npm run release:patch
+npm run release:minor
+npm run release:major
+```
+
+Each command:
+- bumps `package.json` and `package-lock.json`;
+- creates a Git commit;
+- creates the matching tag, for example `v0.1.1`;
+- pushes `main` and the tag with `--follow-tags`.
+
+The release workflow runs only for `v*` tags and verifies that the tag matches `package.json` before packaging.
+
+Manual equivalent:
 
 ```bash
 npm version patch

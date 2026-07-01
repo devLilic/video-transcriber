@@ -41,6 +41,7 @@ describe('settings store', () => {
       uiPreferences: {
         theme: 'system',
         density: 'comfortable',
+        playbackRate: 1,
       },
     })
   })
@@ -61,6 +62,7 @@ describe('settings store', () => {
     expect(reloadedStore.getSetting('uiPreferences')).toEqual({
       theme: 'dark',
       density: 'compact',
+      playbackRate: 1,
     })
     expect(reloadedStore.getSetting('updatePreferences')).toEqual({
       autoCheck: true,
@@ -106,6 +108,7 @@ describe('settings store', () => {
       uiPreferences: {
         theme: 'system',
         density: 'comfortable',
+        playbackRate: 1,
       },
     })
   })
